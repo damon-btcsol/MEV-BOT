@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  MEV:
+    image: drakkarsoftware/MEV:stable
+    volumes:
+       - ./logs:/MEV/logs
+       - ./backtesting:/MEV/backtesting
+       - ./tentacles:/MEV/tentacles
+       - ./user:/MEV/user
+    ports:
+       - ${PORT:-80}:${PORT:-5001}
+    restart: always
+  
+  watchtower:
+    image: containrrr/watchtower
+    restart: always
+    command: --cleanup --include-restarting
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
